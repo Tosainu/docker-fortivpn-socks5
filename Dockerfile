@@ -27,3 +27,7 @@ RUN \
     bash ca-certificates openssl ppp
 
 COPY --from=builder /usr/bin/openfortivpn /go/bin/glider /usr/bin/
+COPY entrypoint.sh /usr/bin/
+
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+CMD ["openfortivpn"]
