@@ -1,6 +1,7 @@
 FROM golang:1.11-alpine3.8 as builder
 
 ARG OPENFORTIVPN_VERSION=v1.8.0
+ARG GLIDER_VERSION=v0.6.8
 
 RUN \
   apk update && \
@@ -17,7 +18,11 @@ RUN \
   make -j$(nproc) && \
   make install && \
   # build glider
-  go get -u github.com/nadoo/glider
+  mkdir -p /go/src/github.com/nadoo/glider && \
+  curl -sL https://github.com/nadoo/glider/archive/${GLIDER_VERSION}.tar.gz \
+    | tar xz -C /go/src/github.com/nadoo/glider --strip-components=1 && \
+  cd /go/src/github.com/nadoo/glider && \
+  go get -v ./...
 
 FROM alpine:3.8
 
