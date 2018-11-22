@@ -1,6 +1,6 @@
 FROM golang:1.11-alpine3.8 as builder
 
-ENV OPENFORTIVPN_VERSION=v1.8.0
+ARG OPENFORTIVPN_VERSION=v1.8.0
 
 RUN \
   apk update && \
