@@ -1,7 +1,7 @@
-FROM golang:1.11-alpine3.8 as builder
+FROM golang:1.12-alpine3.9 as builder
 
-ARG OPENFORTIVPN_VERSION=v1.8.1
-ARG GLIDER_VERSION=v0.6.10
+ARG OPENFORTIVPN_VERSION=v1.9.0
+ARG GLIDER_VERSION=v0.6.11
 
 RUN \
   apk update && \
@@ -24,7 +24,7 @@ RUN \
   cd /go/src/github.com/nadoo/glider && \
   go get -v ./...
 
-FROM alpine:3.8
+FROM alpine:3.9
 
 RUN \
   apk update && \
