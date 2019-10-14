@@ -1,7 +1,7 @@
 FROM golang:1.13-alpine3.10 as builder
 
 ARG OPENFORTIVPN_VERSION=v1.10.0
-ARG GLIDER_VERSION=v0.8.2
+ARG GLIDER_VERSION=v0.8.3
 
 RUN \
   apk update && \
