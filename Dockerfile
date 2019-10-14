@@ -4,7 +4,6 @@ ARG OPENFORTIVPN_VERSION=v1.10.0
 ARG GLIDER_VERSION=v0.8.3
 
 RUN \
-  apk update && \
   apk add --no-cache \
     autoconf automake build-base ca-certificates curl git openssl-dev ppp && \
   update-ca-certificates && \
@@ -25,12 +24,7 @@ RUN \
   go get -v ./...
 
 FROM alpine:3.10
-
-RUN \
-  apk update && \
-  apk add --no-cache \
-    bash ca-certificates openssl ppp
-
+RUN apk add --no-cache ca-certificates openssl ppp
 COPY --from=builder /usr/bin/openfortivpn /go/bin/glider /usr/bin/
 COPY entrypoint.sh /usr/bin/
 
