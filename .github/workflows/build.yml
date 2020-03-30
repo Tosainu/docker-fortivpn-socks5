@@ -1,0 +1,31 @@
+name: Build
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: 0 0 1 * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: myon/fortivpn-socks5
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: docker build --pull -t $IMAGE_NAME:latest .
+
+      - name: Push container images
+        env:
+          USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+        run: |
+          docker login -u "$USERNAME" --password-stdin <<< "$PASSWORD"
+
+          tag=$(date -u +%Y%m%d)
+          docker tag $IMAGE_NAME:latest $IMAGE_NAME:$tag
+          docker push $IMAGE_NAME:latest
+          docker push $IMAGE_NAME:$tag
+
+          rm -rf ~/.docker
