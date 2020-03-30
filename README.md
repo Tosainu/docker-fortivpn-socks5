@@ -1,10 +1,10 @@
-# docker-fortivpn-socks5 [![Docker Build Status](https://img.shields.io/docker/build/myon/fortivpn-socks5.svg)](https://hub.docker.com/r/myon/fortivpn-socks5/builds/)
+# docker-fortivpn-socks5 ![](https://https://github.com/Tosainu/docker-fortivpn-socks5/workflows/Build/badge.svg)
 
 Connect to a Fortinet SSL-VPN via http/socks5 proxy.
 
 ## Usage
 
-1. Create a openfortivpn configuration file.
+1. Create an openfortivpn configuration file.
 
     ```
     $ cat /path/to/config
@@ -14,7 +14,7 @@ Connect to a Fortinet SSL-VPN via http/socks5 proxy.
     password = bar
     ```
 
-2. Run following command to start the container.
+2. Run the following command to start the container.
 
     ```
     $ docker container run \
