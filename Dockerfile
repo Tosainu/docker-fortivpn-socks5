@@ -1,7 +1,7 @@
-FROM golang:1.13-alpine3.11 as builder
+FROM golang:1.18-alpine3.15 as builder
 
-ARG OPENFORTIVPN_VERSION=v1.13.2
-ARG GLIDER_VERSION=v0.9.2
+ARG OPENFORTIVPN_VERSION=v1.17.1
+ARG GLIDER_VERSION=v0.16.0
 
 RUN \
   apk add --no-cache \
@@ -21,11 +21,12 @@ RUN \
   curl -sL https://github.com/nadoo/glider/archive/${GLIDER_VERSION}.tar.gz \
     | tar xz -C /go/src/github.com/nadoo/glider --strip-components=1 && \
   cd /go/src/github.com/nadoo/glider && \
-  go get -v ./...
+  go build -v -ldflags "-s -w"
 COPY entrypoint.sh /usr/bin/
 
-FROM alpine:3.11
+FROM alpine:3.15
 RUN apk add --no-cache ca-certificates openssl ppp
-COPY --from=builder /usr/bin/openfortivpn /go/bin/glider /usr/bin/entrypoint.sh /usr/bin/
+COPY --from=builder /usr/bin/openfortivpn /go/src/github.com/nadoo/glider/glider /usr/bin/entrypoint.sh /usr/bin/
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+EXPOSE 8443/tcp
 CMD ["openfortivpn"]
