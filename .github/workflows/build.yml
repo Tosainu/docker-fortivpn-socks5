@@ -1,31 +1,33 @@
 name: Build
 on:
   push:
-    branches: [master]
-  schedule:
-    - cron: 0 0 1 * *
+    branches:
+      - master
+      - develop
+    tags:
+      - '*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: myon/fortivpn-socks5
+      IMAGE_NAME: tosainu/fortivpn-socks5
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.0.0
 
-      - run: docker build --pull -t $IMAGE_NAME:latest .
+      - uses: docker/setup-qemu-action@v1.2.0
+        id: qemu
+        with:
+          platforms: arm64
+      - uses: docker/setup-buildx-action@v1.6.0
 
-      - name: Push container images
+      - name: Build and push
         env:
-          USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+          REGISTRY: ghcr.io
+          USERNAME: ${{ github.actor }}
+          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          docker login -u "$USERNAME" --password-stdin <<< "$PASSWORD"
-
-          tag=$(date -u +%Y%m%d)
-          docker tag $IMAGE_NAME:latest $IMAGE_NAME:$tag
-          docker push $IMAGE_NAME:latest
-          docker push $IMAGE_NAME:$tag
-
+          docker login "$REGISTRY" -u "$USERNAME" --password-stdin <<< "$PASSWORD"
+          docker buildx build --platform="${{ steps.qemu.outputs.platforms }}" --push -t "$REGISTRY/$IMAGE_NAME:${{ github.ref_name }}" .
           rm -rf ~/.docker
