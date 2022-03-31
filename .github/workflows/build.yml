@@ -1,33 +1,12 @@
 name: Build
-on:
-  push:
-    branches:
-      - master
-      - develop
-    tags:
-      - '*'
+on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: tosainu/fortivpn-socks5
 
     steps:
       - uses: actions/checkout@v3.0.0
-
-      - uses: docker/setup-qemu-action@v1.2.0
-        id: qemu
-        with:
-          platforms: arm64
       - uses: docker/setup-buildx-action@v1.6.0
+      - run: docker buildx build .
 
-      - name: Build and push
-        env:
-          REGISTRY: ghcr.io
-          USERNAME: ${{ github.actor }}
-          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          docker login "$REGISTRY" -u "$USERNAME" --password-stdin <<< "$PASSWORD"
-          docker buildx build --platform="${{ steps.qemu.outputs.platforms }}" --push -t "$REGISTRY/$IMAGE_NAME:${{ github.ref_name }}" .
-          rm -rf ~/.docker
