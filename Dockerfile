@@ -21,6 +21,8 @@ RUN \
   curl -sL https://github.com/nadoo/glider/archive/${GLIDER_VERSION}.tar.gz \
     | tar xz -C /go/src/github.com/nadoo/glider --strip-components=1 && \
   cd /go/src/github.com/nadoo/glider && \
+  awk '/^\s+_/{if (!/http/ && !/socks5/ && !/mixed/) $0="//"$0} {print}' feature.go > feature.go.tmp && \
+  mv feature.go.tmp feature.go && \
   go build -v -ldflags "-s -w"
 COPY entrypoint.sh /usr/bin/
 
