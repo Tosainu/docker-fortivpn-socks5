@@ -4,6 +4,8 @@ Connect to a Fortinet SSL-VPN via http/socks5 proxy.
 
 ## Usage
 
+NOTE: I only tested this image on Linux-based systems. It might not be working on macOS.
+
 1. Create an openfortivpn configuration file.
 
     ```
@@ -22,7 +24,7 @@ Connect to a Fortinet SSL-VPN via http/socks5 proxy.
         --device=/dev/ppp \
         --rm \
         -v /path/to/config:/etc/openfortivpn/config:ro \
-        myon/fortivpn-socks5
+        ghcr.io/tosainu/fortivpn-socks5:master
     ```
 
 3. Now you can use SSL-VPN via `http://<container-ip>:8443` or `socks5://<container-ip>:8443`.
