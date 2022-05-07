@@ -7,6 +7,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3.0.2
-      - uses: docker/setup-buildx-action@v1.7.0
+      - uses: docker/setup-buildx-action@v2.0.0
       - run: docker buildx build .
 
