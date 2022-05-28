@@ -26,7 +26,7 @@ RUN \
   go build -v -ldflags "-s -w"
 COPY entrypoint.sh /usr/bin/
 
-FROM alpine:3.15
+FROM alpine:3.16.0
 RUN apk add --no-cache ca-certificates openssl ppp
 COPY --from=builder /usr/bin/openfortivpn /go/src/github.com/nadoo/glider/glider /usr/bin/entrypoint.sh /usr/bin/
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
