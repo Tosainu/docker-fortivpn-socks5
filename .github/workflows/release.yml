@@ -14,7 +14,7 @@ jobs:
       IMAGE_NAME: tosainu/fortivpn-socks5
 
     steps:
-      - uses: actions/checkout@v3.3.0
+      - uses: actions/checkout@v3.5.0
 
       - uses: docker/setup-qemu-action@v2.1.0
         id: qemu
