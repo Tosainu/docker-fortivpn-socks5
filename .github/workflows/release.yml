@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3.6.0
 
-      - uses: docker/setup-qemu-action@v2.2.0
+      - uses: docker/setup-qemu-action@v3.0.0
         id: qemu
         with:
           platforms: arm64
